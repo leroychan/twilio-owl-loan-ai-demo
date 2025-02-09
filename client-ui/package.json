@@ -1,0 +1,28 @@
+{
+  "name": "twilio-owl-loan-ai-demo-ui",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "start": "next start",
+    "lint": "next lint",
+    "tsc": "tsc --noEmit",
+    "build": "next build && npm run transfer-assets",
+    "transfer-assets": "rm -rfv ../serverless-functions/dist/assets/ && mkdir ../serverless-functions/dist/assets/ && cp -R ./out/* ../serverless-functions/dist/assets/"
+  },
+  "dependencies": {
+    "@twilio-paste/core": "^20.4.0",
+    "@twilio-paste/icons": "^12.2.0",
+    "next": "^14.0.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "twilio-sync": "^3.3.5",
+    "validator": "^13.12.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/validator": "^13.12.2",
+    "eslint": "^8.29.0",
+    "typescript": "^4.9.4"
+  }
+}
