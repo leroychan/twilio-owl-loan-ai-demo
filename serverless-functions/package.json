@@ -1,0 +1,30 @@
+{
+  "name": "twilio-owl-loan-ai-demo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "test": "tsc --noEmit",
+    "start": "twilio-run --functions-folder dist/functions --assets-folder dist/assets",
+    "deploy": "twilio-run deploy --functions-folder dist/functions --assets-folder dist/assets",
+    "build": "tsc && npm run build:copy-assets",
+    "build:copy-assets": "copyfiles src/assets/* src/assets/**/* --up 2 --exclude **/*.ts dist/assets/",
+    "prestart": "npm run build",
+    "predeploy": "npm run build"
+  },
+  "dependencies": {
+    "@segment/analytics-node": "^2.2.1",
+    "@twilio-labs/serverless-runtime-types": "^4.0.0",
+    "@twilio/runtime-handler": "2.0.1",
+    "node-fetch": "2.6.7",
+    "twilio": "5.0.3"
+  },
+  "devDependencies": {
+    "@types/node-fetch": "^2.6.12",
+    "copyfiles": "^2.4.1",
+    "twilio-run": "^4.0.3",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": "18"
+  }
+}
