@@ -16,6 +16,7 @@ export default function Index() {
   const [user, setUser] = useState<User>({
     name: "John Tan",
     phone: "+6591234567",
+    language: "en-US",
   });
   const [callSid, setCallSid] = useState<string>("");
 
@@ -29,6 +30,7 @@ export default function Index() {
           setUser({
             name: properties?.user.name,
             phone: properties?.user.phone,
+            language: properties?.user.language,
           });
           return;
         case Action.OutboundCall:
@@ -41,6 +43,7 @@ export default function Index() {
             body: JSON.stringify({
               toNumber: user.phone,
               customerName: user.name,
+              language: user.language,
             }),
           })
             .then((res) => res.json())

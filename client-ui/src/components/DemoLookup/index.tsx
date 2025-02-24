@@ -24,6 +24,7 @@ export type DemoLookupProps = {
   user: {
     name: string;
     phone: string;
+    language?: string;
     email?: string;
   };
   performActions: (

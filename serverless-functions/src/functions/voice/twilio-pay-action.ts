@@ -4,6 +4,11 @@ import {
   ServerlessEventObject,
   ServerlessFunctionSignature,
 } from "@twilio-labs/serverless-runtime-types/types";
+import * as LanguageConfig from "../common/language.helper.private";
+
+const { getLanguageConfig } = <typeof LanguageConfig>(
+  require(Runtime.getFunctions()["common/language.helper"].path)
+);
 
 // Type(s)
 type RequestContext = {
@@ -29,6 +34,8 @@ type RequestEvent = {
   PaymentError?: string;
   callSid: string;
   aiAssistantSid: string;
+  session: string;
+  language: string;
 };
 
 export const handler: ServerlessFunctionSignature<
@@ -63,22 +70,26 @@ export const handler: ServerlessFunctionSignature<
     event.aiAssistantSid ?? context.TWILIO_AI_ASSISTANT_DEFAULT_SID;
 
   // Step 2: Formulate Payload
+  const languageConfig = getLanguageConfig();
+  const selectedConfig = languageConfig[event.language ?? "en-US"];
+
   let sayText = "";
 
   if (event.Result === "success") {
     const last4ConfirmationCode = event.PaymentConfirmationCode.slice(-3);
-    sayText = `You have successfully completed your payment via Twilio Pay. Your Stripe payment confirmation ends with ${last4ConfirmationCode}. Once the payment is validated by our friendly staff, the new outstanding loan will be reflected accordingly. Is there anything else I can help with?`;
+    sayText = `${selectedConfig.paymentSuccess}${last4ConfirmationCode}`;
   } else if (event.Result === "payment-connector-error") {
-    sayText = `Your payment was unsuccessful due to a payment gateway error. Would you like to make a payment again?`;
+    sayText = `${selectedConfig.paymentGatewayError}`;
   } else {
-    sayText = `Your payment was unsuccessful. Would you like to make a payment again?`;
+    sayText = `${selectedConfig.paymentGenericError}`;
   }
 
   const twiMlPayload = `
     <Response>
       <Connect>
-          <Assistant id="${aiAssistantSid}" welcomeGreeting="${sayText}" voice="en-US-Journey-O">
+          <Assistant id="${aiAssistantSid}" welcomeGreeting="${sayText}" transcriptionProvider="${selectedConfig.transcriptionProvider}" language="${selectedConfig.language}" ttsProvider="${selectedConfig.ttsProvider}" voice="${selectedConfig.aiAssistanceVoice}">
                <Parameter name="identity" value="phone:${event.Called}"/>
+               <Parameter name="sessionId" value="${event.session}" />
           </Assistant>
       </Connect>
     </Response>

@@ -1,6 +1,7 @@
 // Imports global types
 import "@twilio-labs/serverless-runtime-types";
 import * as SegmentUtil from "../common/segment.helper.private";
+import * as LanguageConfig from "../common/language.helper.private";
 
 // Fetches specific types
 import {
@@ -14,6 +15,9 @@ import {
 const { segmentGetNameById, segmentIdentify, segmentTrack } = <
   typeof SegmentUtil
 >require(Runtime.getFunctions()["common/segment.helper"].path);
+const { getLanguageConfig } = <typeof LanguageConfig>(
+  require(Runtime.getFunctions()["common/language.helper"].path)
+);
 
 // Type(s)
 type RequestContext = {
@@ -35,6 +39,7 @@ type RequestEvent = {
   toNumber: string;
   fromNumber: string;
   aiAssistantSid: string;
+  language?: string;
   twimlUrl?: string;
   customerName?: string;
   amountOwing?: number;
@@ -51,6 +56,7 @@ type CreateCallType = {
 
 // Global Variable(s)
 let fromNumbers: any = [];
+const languageConfig = getLanguageConfig();
 
 export const handler: ServerlessFunctionSignature<
   RequestContext,
@@ -151,37 +157,56 @@ export const handler: ServerlessFunctionSignature<
     const createCallPayload: CreateCallType = {
       from: finalFromNumber,
       to: event.toNumber,
-      statusCallback: `https://${context.DOMAIN_NAME}/voice/status-callback`,
+      statusCallback: `https://${
+        context.DOMAIN_NAME
+      }/voice/status-callback?language=${event.language ?? "en-US"}`,
       statusCallbackEvent: ["initiated", "ringing", "answered", "completed"],
     };
+    const selectedConfig = languageConfig[event.language ?? "en-US"];
     if (event.twimlUrl && event.twimlUrl !== "") {
       createCallPayload["url"] = event.twimlUrl;
-    } else if (!profileName) {
-      createCallPayload["twiml"] = `
-      <Response>
-        <Start>
-          <Transcription intelligenceService="${context.TWILIO_INTELLIGENCE_SERVICE_SID}" statusCallbackUrl="https://${context.DOMAIN_NAME}/voice/real-time-transcription" />
-        </Start>
-        <Connect>
-          <Assistant id="${aiAssistantSid}" welcomeGreeting="Hi! I'm Owl Loan AI Assistant. How are you?" voice="en-US-Journey-O">
-             <Parameter name="identity" value="phone:${event.toNumber}"/>
-          </Assistant>
-        </Connect>
-      </Response>`;
     } else {
-      createCallPayload["twiml"] = `
-      <Response>
-        <Start>
-          <Transcription intelligenceService="${context.TWILIO_INTELLIGENCE_SERVICE_SID}" statusCallbackUrl="https://${context.DOMAIN_NAME}/voice/real-time-transcription" />
-        </Start>
-        <Connect>
-          <Assistant id="${aiAssistantSid}" welcomeGreeting="Hi ${profileName}! I'm Owl Loan AI Assistant. How are you?" voice="en-US-Journey-O">
-             <Parameter name="identity" value="phone:${event.toNumber}"/>
-          </Assistant>
-        </Connect>
-      </Response>`;
+      createCallPayload["twiml"] = `<Response>`;
+      createCallPayload["twiml"] += `<Start>`;
+      // -- Start: Check For Vintel Supported Languages
+      if (selectedConfig.voiceIntelligenceSid) {
+        createCallPayload["twiml"] += `<Transcription intelligenceService="${
+          selectedConfig.voiceIntelligenceSid
+        }" statusCallbackUrl="https://${
+          context.DOMAIN_NAME
+        }/voice/real-time-transcription" languageCode="${
+          selectedConfig.realtimeTranscriptionLanguage ?? "en-US"
+        }" speechModel="${selectedConfig.realtimeTranscriptionModel}"/>`;
+      } else {
+        createCallPayload[
+          "twiml"
+        ] += `<Transcription statusCallbackUrl="https://${
+          context.DOMAIN_NAME
+        }/voice/real-time-transcription" languageCode="${
+          selectedConfig.realtimeTranscriptionLanguage ?? "en-US"
+        }" speechModel="${selectedConfig.realtimeTranscriptionModel}" />`;
+      }
+      // -- End: Check For Vintel Supported Languages
+      createCallPayload["twiml"] += `</Start>`;
+      createCallPayload["twiml"] += `<Connect>`;
+      // -- Start: Check if Profile Name Exist
+      if (profileName) {
+        createCallPayload[
+          "twiml"
+        ] += `<Assistant id="${aiAssistantSid}"  welcomeGreeting="${selectedConfig.greetingPrefix} ${profileName} ${selectedConfig.greetingSuffix}"  transcriptionProvider="${selectedConfig.transcriptionProvider}" language="${selectedConfig.language}" ttsProvider="${selectedConfig.ttsProvider}" voice="${selectedConfig.aiAssistanceVoice}">`;
+      } else {
+        createCallPayload[
+          "twiml"
+        ] += `<Assistant id="${aiAssistantSid}"  welcomeGreeting="${selectedConfig.greetingWithoutName}"  transcriptionProvider="${selectedConfig.transcriptionProvider}" language="${selectedConfig.language}" ttsProvider="${selectedConfig.ttsProvider}" voice="${selectedConfig.aiAssistanceVoice}">`;
+      }
+      // -- End: Check if Profile Name Exist
+      createCallPayload[
+        "twiml"
+      ] += `<Parameter name="identity" value="phone:${event.toNumber}"/>`;
+      createCallPayload["twiml"] += `</Assistant>`;
+      createCallPayload["twiml"] += `</Connect>`;
+      createCallPayload["twiml"] += `</Response>`;
     }
-
     /*
      * Step 5: Make Phone Call
      */

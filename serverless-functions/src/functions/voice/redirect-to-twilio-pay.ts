@@ -1,5 +1,6 @@
 // Imports global types
 import "@twilio-labs/serverless-runtime-types";
+import * as LanguageConfig from "../common/language.helper.private";
 
 // Fetches specific types
 import {
@@ -8,6 +9,10 @@ import {
   ServerlessEventObject,
   ServerlessFunctionSignature,
 } from "@twilio-labs/serverless-runtime-types/types";
+
+const { getTwilioPayLanguageConfig } = <typeof LanguageConfig>(
+  require(Runtime.getFunctions()["common/language.helper"].path)
+);
 
 // Type(s)
 type RequestContext = {
@@ -25,7 +30,7 @@ type RequestContext = {
 
 type RequestEvent = {
   chargeAmount: string;
-  language: string;
+  languageCode: string;
 };
 
 export const handler: ServerlessFunctionSignature<
@@ -73,12 +78,20 @@ export const handler: ServerlessFunctionSignature<
       return callback(null, response);
     }
 
-    // Step 2: Formulate TwiML
-    const actionUrl = `https://${context.DOMAIN_NAME}/voice/twilio-pay-action?callSid=${callSid}`;
+    // Step 2: Determine Language
+    const languageConfig = getTwilioPayLanguageConfig();
+    const selectedConfig = languageConfig[event.languageCode ?? "en-US"];
+
+    // Step 3: Formulate TwiML
+    const actionUrl = `https://${
+      context.DOMAIN_NAME
+    }/voice/twilio-pay-action?callSid=${callSid}&amp;language=${
+      selectedConfig.impliedLocale
+    }&amp;session=${sessionId.replace("voice:", "")}`;
 
     const result = await client.calls(callSid).update({
       twiml: `<Response>
-        <Say voice="Google.en-US-Journey-O">Please wait a moment while we transfer you to a PCI-compliant payment solution. Powered by Twilio Pay</Say>
+        <Say language="${selectedConfig.impliedLocale}" voice="${selectedConfig.transferVoice}">${selectedConfig.transferGreeting}</Say>
           <Pay paymentConnector="Stripe_Connector" action="${actionUrl}" chargeAmount="${event.chargeAmount}"/>
       </Response>`,
     });

@@ -7,6 +7,8 @@ import {
   Button,
   HelpText,
   Label,
+  Select,
+  Option,
 } from "@twilio-paste/core";
 import { Journey } from "@/types/Journey";
 import { Action } from "@/types/Action";
@@ -28,6 +30,7 @@ const IdentifyUser: FC<IdentifyUserProps> = (props) => {
   const [hasErrorPhone, setHasErrorPhone] = useState<boolean>(false);
   const [name, setName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
+  const [language, setLanguage] = useState<string>("en-US");
 
   useEffect(() => {
     if ((!phone || phone === "") && (!name || name === "")) {
@@ -49,6 +52,12 @@ const IdentifyUser: FC<IdentifyUserProps> = (props) => {
       setIsValidName(false);
     }
   }, [name]);
+
+  useEffect(() => {
+    if (language !== null && language.length > 0) {
+      return;
+    }
+  }, [language]);
 
   return (
     <Box
@@ -114,6 +123,20 @@ const IdentifyUser: FC<IdentifyUserProps> = (props) => {
             : "Invalid phone number format. Please use E.164 (e.g. +651234567)"}
         </HelpText>
       </Box>
+      <Box marginBottom="space80">
+        <Label htmlFor="language" required>
+          Language
+        </Label>
+        <Select
+          id="language"
+          required
+          onChange={(e) => setLanguage(e.target.value)}
+        >
+          <Option value="en-US">English (US)</Option>
+          <Option value="en-AU">English (AU)</Option>
+          <Option value="ja-JP">Japanese</Option>
+        </Select>
+      </Box>
       <Button
         variant="primary"
         fullWidth
@@ -124,6 +147,7 @@ const IdentifyUser: FC<IdentifyUserProps> = (props) => {
             user: {
               name,
               phone,
+              language,
             },
           });
         }}

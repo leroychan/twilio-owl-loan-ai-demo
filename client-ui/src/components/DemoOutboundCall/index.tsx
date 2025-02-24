@@ -10,6 +10,7 @@ export type DemoOutboundCallProps = {
   user: {
     name: string;
     phone: string;
+    language?: string;
     email?: string;
   };
   performActions: (
@@ -35,7 +36,7 @@ const DemoOutboundCall: FC<DemoOutboundCallProps> = (props) => {
         Hello {props.user.name},
       </Heading>
       <Paragraph>
-        Get ready for an automated outbound call to {props.user.phone}!
+        Get ready for an automated outbound call to {props.user.phone} !
       </Paragraph>
       <Button
         variant="primary"
