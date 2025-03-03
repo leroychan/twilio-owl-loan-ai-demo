@@ -63,7 +63,7 @@ export const getLanguageConfig = () => {
       greetingPrefix: "こんにちは",
       greetingSuffix: "! 私はOwl Loan AIアシスタントです。お元気ですか？",
       paymentSuccess:
-        "Twilio Pay 経由で支払いが完了しました。Stripe の支払い確認は ",
+        "Twilio Pay 経由で支払いが完了しました。Stripe の支払い確認番号の末尾は ",
       paymentGatewayError:
         "支払いゲートウェイのエラーにより、お支払いが失敗しました。再度お支払いを行ってください",
       paymentGenericError:

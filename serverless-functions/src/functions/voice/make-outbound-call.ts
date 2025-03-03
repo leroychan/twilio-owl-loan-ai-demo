@@ -149,7 +149,7 @@ export const handler: ServerlessFunctionSignature<
         Object.keys(fromNumbers).find((countryCode: string) =>
           event.toNumber.startsWith(countryCode)
         ) ?? "+1"
-      ][0];
+      ][0] ?? fromNumbers["+1"][0];
 
     /*
      * Step 3: Formulate TwiML

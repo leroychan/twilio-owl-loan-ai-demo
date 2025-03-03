@@ -176,13 +176,13 @@ const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
   return (
     <Box
       as="article"
-      padding="space80"
+      padding="space60"
       borderWidth="borderWidth10"
       borderColor="colorBorderWeaker"
       borderStyle="solid"
       borderRadius="borderRadius30"
       backgroundColor="colorBackgroundBodyInverse"
-      width="90%"
+      width="100%"
       alignItems="center"
     >
       <Heading as="h1" variant="heading30">
@@ -212,7 +212,7 @@ const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
           </Box>
         </Card>
       ) : (
-        <Card>
+        <Card padding="space30">
           <Box
             display="flex"
             flexDirection="column"
@@ -247,7 +247,7 @@ const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
             <Box width="100%" element="SEPARATOR">
               <Separator orientation="horizontal" verticalSpacing="space0" />
             </Box>
-            <Box width="100%">
+            <Box width="100%" padding="space0">
               <ChatLogger chats={chats} />
               <Box ref={loggerRef}></Box>
             </Box>
