@@ -35,7 +35,7 @@ export type DemoOutboundCallDetailsProps = {
 
 const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
   const [isLoadingSyncClient, setIsLoadingSyncClient] = useState<boolean>(true);
-  const [isVintelSupported, setIsVintelSupported] = useState<boolean>(true);
+  const [isRTTSupported, setIsRTTSupported] = useState<boolean>(true);
   const [currentCallStatus, setCurrentCallStatus] = useState<string>("queued");
   const [currentCallStatusVariant, setCurrentCallStatusVariant] =
     useState<string>("neutral");
@@ -170,26 +170,18 @@ const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
       // Step 1: Setup Sync Client
       setupSyncClient().catch(console.error);
       // Step 2: Determine Real Time Transcription Language Support
-      const vintelSupportedLanguage = [
+      const rttSupportedLanguage = [
         "en-US",
         "en-AU",
-        "en-GB",
-        "da-DK",
-        "nl-NL",
-        "fr-FR",
-        "de-DE",
-        "it-IT",
-        "no-NO",
-        "pl-PL",
-        "pt-BR",
-        "pt-PT",
+        "ja-JP",
+        "hi-IN",
         "es-ES",
-        "es-MX",
-        "es-US",
-        "sv-SE",
+        "ko-KR",
+        "th-TH",
+        "vi-VN",
       ];
-      if (!vintelSupportedLanguage.includes(props.user.language)) {
-        setIsVintelSupported(false);
+      if (!rttSupportedLanguage.includes(props.user.language)) {
+        setIsRTTSupported(false);
       }
     } catch (err) {
       console.log("Error in initializing Sync Client");
@@ -236,7 +228,7 @@ const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
           </Box>
         </Card>
       )}
-      {!isLoadingSyncClient && isVintelSupported && (
+      {!isLoadingSyncClient && isRTTSupported && (
         <Card padding="space30">
           <Box
             display="flex"

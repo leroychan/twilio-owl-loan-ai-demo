@@ -134,8 +134,11 @@ const IdentifyUser: FC<IdentifyUserProps> = (props) => {
         >
           <Option value="en-US">English (US)</Option>
           <Option value="en-AU">English (AU)</Option>
+          <Option value="hi-IN">Hindi</Option>
           <Option value="ja-JP">Japanese</Option>
+          <Option value="ko-KR">Korean</Option>
           <Option value="es-ES">Spanish</Option>
+          <Option value="th-TH">Thai</Option>
         </Select>
       </Box>
       <Button

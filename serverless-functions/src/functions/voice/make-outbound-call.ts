@@ -39,7 +39,7 @@ type RequestEvent = {
   toNumber: string;
   fromNumber: string;
   aiAssistantSid: string;
-  language?: string;
+  language: string;
   twimlUrl?: string;
   customerName?: string;
   amountOwing?: number;
@@ -167,27 +167,74 @@ export const handler: ServerlessFunctionSignature<
       createCallPayload["url"] = event.twimlUrl;
     } else {
       createCallPayload["twiml"] = `<Response>`;
-      createCallPayload["twiml"] += `<Start>`;
       // -- Start: Check For Vintel Supported Languages
-      if (selectedConfig.voiceIntelligenceSid) {
-        createCallPayload["twiml"] += `<Transcription intelligenceService="${
-          selectedConfig.voiceIntelligenceSid
-        }" statusCallbackUrl="https://${
-          context.DOMAIN_NAME
-        }/voice/real-time-transcription" languageCode="${
-          selectedConfig.realtimeTranscriptionLanguage ?? "en-US"
-        }" speechModel="${selectedConfig.realtimeTranscriptionModel}"/>`;
-      } else {
-        createCallPayload[
-          "twiml"
-        ] += `<Transcription statusCallbackUrl="https://${
-          context.DOMAIN_NAME
-        }/voice/real-time-transcription" languageCode="${
-          selectedConfig.realtimeTranscriptionLanguage ?? "en-US"
-        }" speechModel="${selectedConfig.realtimeTranscriptionModel}" />`;
+      const rttSupportedLanguage = [
+        "en-US",
+        "en-AU",
+        "ja-JP",
+        "hi-IN",
+        "es-ES",
+        "ko-KR",
+        "th-TH",
+        "vi-VN",
+      ];
+      const isRttSupported = rttSupportedLanguage.includes(event.language);
+      if (isRttSupported) {
+        createCallPayload["twiml"] += `<Start>`;
+        if (
+          selectedConfig.voiceIntelligenceSid &&
+          selectedConfig.realtimeTranscriptionModel === "telephony"
+        ) {
+          createCallPayload["twiml"] += `<Transcription intelligenceService="${
+            selectedConfig.voiceIntelligenceSid
+          }" statusCallbackUrl="https://${
+            context.DOMAIN_NAME
+          }/voice/real-time-transcription" languageCode="${
+            selectedConfig.realtimeTranscriptionLanguage ?? "en-US"
+          }" speechModel="${selectedConfig.realtimeTranscriptionModel}"/>`;
+        } else if (
+          !selectedConfig.voiceIntelligenceSid &&
+          selectedConfig.realtimeTranscriptionModel === "telephony"
+        ) {
+          createCallPayload[
+            "twiml"
+          ] += `<Transcription statusCallbackUrl="https://${
+            context.DOMAIN_NAME
+          }/voice/real-time-transcription" languageCode="${
+            selectedConfig.realtimeTranscriptionLanguage ?? "en-US"
+          }" speechModel="${selectedConfig.realtimeTranscriptionModel}" />`;
+        } else if (
+          selectedConfig.voiceIntelligenceSid &&
+          (selectedConfig.realtimeTranscriptionModel === "short" ||
+            selectedConfig.realtimeTranscriptionModel === "long")
+        ) {
+          createCallPayload["twiml"] += `<Transcription intelligenceService="${
+            selectedConfig.voiceIntelligenceSid
+          }" statusCallbackUrl="https://${
+            context.DOMAIN_NAME
+          }/voice/real-time-transcription" languageCode="${
+            selectedConfig.realtimeTranscriptionLanguage ?? "en-US"
+          }" speechModel="${
+            selectedConfig.realtimeTranscriptionModel
+          }" enableAutomaticPunctuation="false" />`;
+        } else if (
+          !selectedConfig.voiceIntelligenceSid &&
+          (selectedConfig.realtimeTranscriptionModel === "short" ||
+            selectedConfig.realtimeTranscriptionModel === "long")
+        ) {
+          createCallPayload[
+            "twiml"
+          ] += `<Transcription statusCallbackUrl="https://${
+            context.DOMAIN_NAME
+          }/voice/real-time-transcription" languageCode="${
+            selectedConfig.realtimeTranscriptionLanguage ?? "en-US"
+          }" speechModel="${
+            selectedConfig.realtimeTranscriptionModel
+          }" enableAutomaticPunctuation="false" />`;
+        }
+        createCallPayload["twiml"] += `</Start>`;
       }
       // -- End: Check For Vintel Supported Languages
-      createCallPayload["twiml"] += `</Start>`;
       createCallPayload["twiml"] += `<Connect>`;
       // -- Start: Check if Profile Name Exist
       if (profileName) {
