@@ -81,6 +81,25 @@ export const handler: ServerlessFunctionSignature<
     // Step 2: Determine Language
     const languageConfig = getTwilioPayLanguageConfig();
     const selectedConfig = languageConfig[event.languageCode ?? "en-US"];
+    // -- Twilio Pay Supported languages
+    // ---- Defaults to "en-AU" if not supported
+    const paySupportedLanguage = [
+      "en-AU",
+      "en-CA",
+      "en-GB",
+      "en-IN",
+      "en-US",
+      "es-ES",
+      "es-MX",
+      "fr-CA",
+      "fr-FR",
+      "de-DE",
+      "it-IT",
+    ];
+    let twilioPayLanguage = "en-AU";
+    if (paySupportedLanguage.includes(selectedConfig.impliedLocale)) {
+      twilioPayLanguage = selectedConfig.impliedLocale;
+    }
 
     // Step 3: Formulate TwiML
     const actionUrl = `https://${
@@ -92,7 +111,7 @@ export const handler: ServerlessFunctionSignature<
     const result = await client.calls(callSid).update({
       twiml: `<Response>
         <Say language="${selectedConfig.impliedLocale}" voice="${selectedConfig.transferVoice}">${selectedConfig.transferGreeting}</Say>
-          <Pay paymentConnector="Stripe_Connector" action="${actionUrl}" chargeAmount="${event.chargeAmount}"/>
+          <Pay paymentConnector="Stripe_Connector" action="${actionUrl}" chargeAmount="${event.chargeAmount}" language="${twilioPayLanguage}" postalCode="false" />
       </Response>`,
     });
 

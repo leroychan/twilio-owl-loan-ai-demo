@@ -28,12 +28,14 @@ export type DemoOutboundCallDetailsProps = {
     name: string;
     phone: string;
     email?: string;
+    language: string;
   };
   callSid: string;
 };
 
 const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
   const [isLoadingSyncClient, setIsLoadingSyncClient] = useState<boolean>(true);
+  const [isVintelSupported, setIsVintelSupported] = useState<boolean>(true);
   const [currentCallStatus, setCurrentCallStatus] = useState<string>("queued");
   const [currentCallStatusVariant, setCurrentCallStatusVariant] =
     useState<string>("neutral");
@@ -167,6 +169,28 @@ const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
     try {
       // Step 1: Setup Sync Client
       setupSyncClient().catch(console.error);
+      // Step 2: Determine Real Time Transcription Language Support
+      const vintelSupportedLanguage = [
+        "en-US",
+        "en-AU",
+        "en-GB",
+        "da-DK",
+        "nl-NL",
+        "fr-FR",
+        "de-DE",
+        "it-IT",
+        "no-NO",
+        "pl-PL",
+        "pt-BR",
+        "pt-PT",
+        "es-ES",
+        "es-MX",
+        "es-US",
+        "sv-SE",
+      ];
+      if (!vintelSupportedLanguage.includes(props.user.language)) {
+        setIsVintelSupported(false);
+      }
     } catch (err) {
       console.log("Error in initializing Sync Client");
       console.log(err);
@@ -200,7 +224,7 @@ const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
         sample credit card details: 4242 4242 4242 4242, Expiry: 12/26, Postal
         Code: Any integer, CVV: Any 3 digits.
       </Paragraph>
-      {isLoadingSyncClient ? (
+      {isLoadingSyncClient && (
         <Card>
           <Box>
             <Stack orientation="vertical" spacing="space20">
@@ -211,7 +235,8 @@ const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
             </Stack>
           </Box>
         </Card>
-      ) : (
+      )}
+      {!isLoadingSyncClient && isVintelSupported && (
         <Card padding="space30">
           <Box
             display="flex"

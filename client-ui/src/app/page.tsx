@@ -68,13 +68,6 @@ export default function Index() {
         return <DemoOutboundCall performActions={performActions} user={user} />;
       case Journey.DemoOutboundCallDetails:
         return <DemoOutboundCallDetails callSid={callSid} user={user} />;
-      case Journey.Dev:
-        return (
-          <DemoOutboundCallDetails
-            callSid="123123"
-            user={{ name: "Hehe", phone: "+6590100209" }}
-          />
-        );
       default:
         return <IdentifyUser performActions={performActions} />;
     }

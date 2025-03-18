@@ -36,21 +36,6 @@ export const getLanguageConfig = () => {
       paymentGenericError:
         "Your payment was unsuccessful. Would you like to make a payment again?",
     },
-    "zh-CN": {
-      realtimeTranscriptionLanguage: "cmn-Hans-CN",
-      realtimeTranscriptionModel: "telephony",
-      transcriptionProvider: "deepgram",
-      language: "zh",
-      ttsProvider: "Elevenlabs",
-      aiAssistanceVoice: "4VZIsMPtgggwNg7OXbPY",
-      greetingWithoutName: "你好! 我是猫头鹰贷款AI助理。你好吗?",
-      greetingPrefix: "你好",
-      greetingSuffix: "! 我是猫头鹰贷款AI助理。你好吗?",
-      paymentSuccess:
-        "您已成功通过 Twilio Pay 完成付款。您的 Stripe 付款确认以以下内容结束：",
-      paymentGatewayError: "由于支付网关错误，您的付款失败。您想再次付款吗？",
-      paymentGenericError: "您的付款失败。您想再次付款吗？",
-    },
     "ja-JP": {
       realtimeTranscriptionLanguage: "ja-JP",
       realtimeTranscriptionModel: "telephony",
@@ -104,6 +89,21 @@ export const getLanguageConfig = () => {
         "การชำระเงินของคุณไม่สำเร็จเนื่องจากข้อผิดพลาดของเกตเวย์การชำระเงิน คุณต้องการชำระเงินอีกครั้งหรือไม่",
       paymentGenericError:
         "การชำระเงินของคุณไม่สำเร็จ คุณต้องการชำระเงินอีกครั้งหรือไม่",
+    },
+    "zh-CN": {
+      realtimeTranscriptionLanguage: "cmn-Hans-CN",
+      realtimeTranscriptionModel: "telephony",
+      transcriptionProvider: "deepgram",
+      language: "zh",
+      ttsProvider: "Elevenlabs",
+      aiAssistanceVoice: "4VZIsMPtgggwNg7OXbPY",
+      greetingWithoutName: "你好! 我是猫头鹰贷款AI助理。你好吗?",
+      greetingPrefix: "你好",
+      greetingSuffix: "! 我是猫头鹰贷款AI助理。你好吗?",
+      paymentSuccess:
+        "您已成功通过 Twilio Pay 完成付款。您的 Stripe 付款确认以以下内容结束：",
+      paymentGatewayError: "由于支付网关错误，您的付款失败。您想再次付款吗？",
+      paymentGenericError: "您的付款失败。您想再次付款吗？",
     },
   };
   return languageConfig;
