@@ -69,6 +69,25 @@ export const getLanguageConfig = () => {
       paymentGenericError:
         "お支払いに失敗しました。再度お支払いをご希望ですか?",
     },
+    "es-ES": {
+      voiceIntelligenceSid: "GAa7a0ab07cf571d9b3891d0c69a12159b",
+      realtimeTranscriptionLanguage: "es-ES",
+      realtimeTranscriptionModel: "telephony",
+      transcriptionProvider: "deepgram",
+      language: "es-ES",
+      ttsProvider: "ElevenLabs",
+      aiAssistanceVoice: "57D8YIbQSuE3REDPO6Vm",
+      greetingWithoutName:
+        "¡Hola! Soy un asistente de inteligencia artificial de Owl Loan. ¿Cómo estás?",
+      greetingPrefix: "¡Hola",
+      greetingSuffix: "! Soy el Asistente de IA de Owl Loan. ¿Cómo estás?",
+      paymentSuccess:
+        "Has completado correctamente tu pago a través de Twilio Pay. La confirmación de tu pago con Stripe finaliza con ",
+      paymentGatewayError:
+        "Tu pago no se realizó correctamente debido a un error en la pasarela de pago. ¿Quieres volver a pagar?",
+      paymentGenericError:
+        "Tu pago no se realizó correctamente. ¿Quieres realizar un nuevo pago?",
+    },
     "th-TH": {
       realtimeTranscriptionLanguage: "th-TH",
       realtimeTranscriptionModel: "short",
@@ -109,6 +128,12 @@ export const getTwilioPayLanguageConfig = () => {
       transferGreeting:
         "PCI準拠の支払いソリューションに転送するまでしばらくお待ちください。Twilio Payによって提供されています",
       transferVoice: "Google.ja-JP-Wavenet-C",
+    },
+    es: {
+      impliedLocale: "es-ES",
+      transferGreeting:
+        "Espere un momento mientras lo transferimos a una solución de pago compatible con PCI. Desarrollado por Twilio Pay.",
+      transferVoice: "Google.es-ES-Wavenet-E",
     },
     th: {
       impliedLocale: "th-TH",
