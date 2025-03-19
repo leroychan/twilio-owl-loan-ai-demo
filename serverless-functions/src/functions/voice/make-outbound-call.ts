@@ -237,14 +237,22 @@ export const handler: ServerlessFunctionSignature<
       // -- End: Check For Vintel Supported Languages
       createCallPayload["twiml"] += `<Connect>`;
       // -- Start: Check if Profile Name Exist
-      if (profileName) {
+      if (profileName && !selectedConfig.ttsLanguage) {
         createCallPayload[
           "twiml"
         ] += `<Assistant id="${aiAssistantSid}"  welcomeGreeting="${selectedConfig.greetingPrefix} ${profileName} ${selectedConfig.greetingSuffix}"  transcriptionProvider="${selectedConfig.transcriptionProvider}" language="${selectedConfig.language}" ttsProvider="${selectedConfig.ttsProvider}" voice="${selectedConfig.aiAssistanceVoice}">`;
-      } else {
+      } else if (!profileName && !selectedConfig.ttsLanguage) {
         createCallPayload[
           "twiml"
         ] += `<Assistant id="${aiAssistantSid}"  welcomeGreeting="${selectedConfig.greetingWithoutName}"  transcriptionProvider="${selectedConfig.transcriptionProvider}" language="${selectedConfig.language}" ttsProvider="${selectedConfig.ttsProvider}" voice="${selectedConfig.aiAssistanceVoice}">`;
+      } else if (profileName && selectedConfig.ttsLanguage) {
+        createCallPayload[
+          "twiml"
+        ] += `<Assistant id="${aiAssistantSid}"  welcomeGreeting="${selectedConfig.greetingPrefix} ${profileName} ${selectedConfig.greetingSuffix}"  transcriptionProvider="${selectedConfig.transcriptionProvider}" transcriptionLanguage="${selectedConfig.language}" ttsLanguage="${selectedConfig.ttsLanguage}" ttsProvider="${selectedConfig.ttsProvider}" voice="${selectedConfig.aiAssistanceVoice}">`;
+      } else if (!profileName && selectedConfig.ttsLanguage) {
+        createCallPayload[
+          "twiml"
+        ] += `<Assistant id="${aiAssistantSid}"  welcomeGreeting="${selectedConfig.greetingWithoutName}"  transcriptionProvider="${selectedConfig.transcriptionProvider}" transcriptionLanguage="${selectedConfig.language}" ttsLanguage="${selectedConfig.ttsLanguage}"  ttsProvider="${selectedConfig.ttsProvider}" voice="${selectedConfig.aiAssistanceVoice}">`;
       }
       // -- End: Check if Profile Name Exist
       createCallPayload[
