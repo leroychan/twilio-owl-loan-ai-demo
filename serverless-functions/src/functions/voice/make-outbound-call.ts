@@ -175,8 +175,11 @@ export const handler: ServerlessFunctionSignature<
         "hi-IN",
         "es-ES",
         "ko-KR",
+        "pt-PT",
+        "pt-BR",
         "th-TH",
         "vi-VN",
+        "id-ID",
       ];
       const isRttSupported = rttSupportedLanguage.includes(event.language);
       if (isRttSupported) {

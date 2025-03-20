@@ -177,8 +177,11 @@ const DemoOutboundCallDetails: FC<DemoOutboundCallDetailsProps> = (props) => {
         "hi-IN",
         "es-ES",
         "ko-KR",
+        "pt-PT",
+        "pt-BR",
         "th-TH",
         "vi-VN",
+        "id-ID",
       ];
       if (!rttSupportedLanguage.includes(props.user.language)) {
         setIsRTTSupported(false);

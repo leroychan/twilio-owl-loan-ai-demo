@@ -73,6 +73,23 @@ export const getLanguageConfig = () => {
       paymentGenericError:
         "आपका भुगतान सफल नहीं हुआ. क्या आप नया भुगतान करना चाहते हैं?",
     },
+    "id-ID": {
+      realtimeTranscriptionLanguage: "id-ID",
+      realtimeTranscriptionModel: "short",
+      transcriptionProvider: "deepgram",
+      language: "id-ID",
+      ttsProvider: "ElevenLabs",
+      aiAssistanceVoice: "RWiGLY9uXI70QL540WNd",
+      greetingWithoutName: "Hai! Saya Asisten AI Owl Loan. Apa kabar?",
+      greetingPrefix: "Hai",
+      greetingSuffix: "! Saya Asisten AI Owl Loan. Apa kabar?",
+      paymentSuccess:
+        "Anda telah berhasil menyelesaikan pembayaran Anda melalui Twilio Pay. Konfirmasi pembayaran Stripe Anda berakhir dengan",
+      paymentGatewayError:
+        "Pembayaran Anda tidak berhasil karena kesalahan gateway pembayaran. Apakah Anda ingin melakukan pembayaran lagi?",
+      paymentGenericError:
+        "Pembayaran Anda gagal. Apakah Anda ingin melakukan pembayaran lagi?",
+    },
     "ja-JP": {
       realtimeTranscriptionLanguage: "ja-JP",
       realtimeTranscriptionModel: "telephony",
@@ -109,6 +126,42 @@ export const getLanguageConfig = () => {
       paymentGenericError:
         "결제가 성공적이지 않았습니다. 새로 결제를 하시겠습니까?",
     },
+    "pt-BR": {
+      voiceIntelligenceSid: "GA05afd64edab9f030b4fb48ee041d5db6",
+      realtimeTranscriptionLanguage: "pt-BR",
+      realtimeTranscriptionModel: "telephony",
+      transcriptionProvider: "deepgram",
+      language: "pt-BR",
+      ttsProvider: "ElevenLabs",
+      aiAssistanceVoice: "Eyspt3SYhZzXd1Jd3J8O",
+      greetingWithoutName: "Olá! Sou o Assistente de IA da Owl Loan. Como vai?",
+      greetingPrefix: "Olá",
+      greetingSuffix: "! Sou o Assistente de IA da Owl Loan. Como vai?",
+      paymentSuccess:
+        "Você concluiu com sucesso seu pagamento via Twilio Pay. Sua confirmação de pagamento Stripe termina com",
+      paymentGatewayError:
+        "Seu pagamento não foi bem-sucedido devido a um erro de gateway de pagamento. Você gostaria de fazer um pagamento novamente?",
+      paymentGenericError:
+        "Seu pagamento não foi bem-sucedido. Você gostaria de fazer um pagamento novamente?",
+    },
+    "pt-PT": {
+      voiceIntelligenceSid: "GA92716b470665fd569e4f938e3e52c336",
+      realtimeTranscriptionLanguage: "pt-PT",
+      realtimeTranscriptionModel: "telephony",
+      transcriptionProvider: "deepgram",
+      language: "pt-PT",
+      ttsProvider: "ElevenLabs",
+      aiAssistanceVoice: "Eyspt3SYhZzXd1Jd3J8O",
+      greetingWithoutName: "Olá! Sou assistente de IA na Owl Loan. Como estás?",
+      greetingPrefix: "Olá",
+      greetingSuffix: "! Sou assistente de IA na Owl Loan. Como estás?",
+      paymentSuccess:
+        "Concluiu o seu pagamento com sucesso via Twilio Pay. A confirmação do seu pagamento Stripe termina com",
+      paymentGatewayError:
+        "O seu pagamento não foi bem-sucedido devido a um erro no gateway de pagamento. Gostaria de fazer um pagamento novamente?",
+      paymentGenericError:
+        "O seu pagamento não foi bem-sucedido. Gostaria de efetuar novamente um pagamento?",
+    },
     "th-TH": {
       realtimeTranscriptionLanguage: "th-TH",
       realtimeTranscriptionModel: "short",
@@ -130,7 +183,7 @@ export const getLanguageConfig = () => {
       realtimeTranscriptionLanguage: "cmn-Hans-CN",
       realtimeTranscriptionModel: "telephony",
       transcriptionProvider: "deepgram",
-      language: "zh-CN",
+      language: "zh",
       ttsProvider: "Elevenlabs",
       aiAssistanceVoice: "4VZIsMPtgggwNg7OXbPY",
       greetingWithoutName: "你好! 我是猫头鹰贷款AI助理。你好吗?",
@@ -181,6 +234,12 @@ export const getTwilioPayLanguageConfig = () => {
         "कृपया कुछ क्षण प्रतीक्षा करें, जब तक हम आपको PCI अनुरूप भुगतान समाधान पर स्थानांतरित नहीं कर देते। ट्विलियो पे द्वारा संचालित",
       transferVoice: "Google.hi-IN-Wavenet-F",
     },
+    id: {
+      impliedLocale: "id-ID",
+      transferGreeting:
+        "Harap tunggu beberapa saat sementara kami mengalihkan Anda ke solusi pembayaran yang sesuai dengan PCI. Didukung oleh Twilio Pay",
+      transferVoice: "Google.id-ID-Wavenet-C",
+    },
     ja: {
       impliedLocale: "ja-JP",
       transferGreeting:
@@ -198,6 +257,12 @@ export const getTwilioPayLanguageConfig = () => {
       transferGreeting:
         "Espere un momento mientras lo transferimos a una solución de pago compatible con PCI. Desarrollado por Twilio Pay.",
       transferVoice: "Google.es-ES-Wavenet-E",
+    },
+    pt: {
+      impliedLocale: "pt-BR",
+      transferGreeting:
+        "Aguarde um momento enquanto transferimos você para uma solução de pagamento compatível com PCI. Desenvolvido por Twilio Pay",
+      transferVoice: "Google.pt-BR-Neural2-C",
     },
     th: {
       impliedLocale: "th-TH",
