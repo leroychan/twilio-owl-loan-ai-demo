@@ -168,7 +168,7 @@ export const getLanguageConfig = () => {
       transcriptionProvider: "deepgram",
       language: "th-TH",
       ttsProvider: "Google",
-      aiAssistanceVoice: "th-TH-Standard-A",
+      aiAssistanceVoice: "th-TH-Chirp3-HD-Aoede",
       greetingWithoutName: "สวัสดี ฉันคือผู้ช่วย Owl Loan AI สบายดีไหม?",
       greetingPrefix: "สวัสดี",
       greetingSuffix: "! ฉันคือผู้ช่วย AI ของ Owl Loan คุณสบายดีไหม?",
